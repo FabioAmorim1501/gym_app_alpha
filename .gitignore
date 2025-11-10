@@ -30,3 +30,7 @@ android/gradle-local.properties
 *.js_
 *.js.deps
 *.js.map
+
+.flutter-plugins
+.flutter-plugins-dependencies
+.cxx/
