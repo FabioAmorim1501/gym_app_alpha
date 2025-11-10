@@ -33,3 +33,4 @@ android/gradle-local.properties
 
 .flutter-plugins
 .flutter-plugins-dependencies
+.cxx/

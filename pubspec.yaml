@@ -1,45 +1,31 @@
 name: gym_app_alpha
 description: A new Flutter project.
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: 'none'
 
 version: 0.0.1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-
-  # State Management
-  flutter_bloc: ^7.0.1
+  flutter_bloc: ^9.1.1
   provider: ^6.0.0
-
-  # UI
   google_fonts: ^6.3.2
   cupertino_icons: ^1.0.2
-  flutter_svg: ^0.22.0
-
-  # Networking
-  http: ^1.1.0
-
-  # Firebase
-  firebase_core: ^4.2.0
-  firebase_auth: ^6.1.1
-  cloud_firestore: ^6.0.3
-
-  # Payments
-  flutter_stripe: ^11.5.0
+  flutter_svg: ^2.2.2
+  http: ^1.5.0
+  firebase_core: ^4.2.1
+  firebase_auth: ^6.1.2
+  cloud_firestore: ^6.1.0
+  flutter_stripe: ^12.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   firebase_auth_mocks: ^0.15.1
-  mockito: ^5.0.16
-  build_runner: ^2.1.10
-  firebase_core_platform_interface: ^6.0.2
+  mocktail: ^1.0.3
 
 flutter:
   uses-material-design: true

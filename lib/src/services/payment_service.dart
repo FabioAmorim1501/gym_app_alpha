@@ -9,11 +9,11 @@ class PaymentService {
       : _stripe = stripe ?? Stripe.instance,
         _firestoreService = firestoreService ?? FirestoreService();
 
-  Future<void> makePayment() async {
+  Future<void> makePayment(String userId) async {
     try {
       // 1. create payment intent on the server
       final clientSecret = await _firestoreService.createPaymentIntent(
-        userId: 'hardcoded_user_id',
+        userId: userId,
         amount: 1000,
       );
       // 2. initialize the payment sheet
@@ -26,8 +26,8 @@ class PaymentService {
       // 3. display the payment sheet.
       await _stripe.presentPaymentSheet();
     } catch (e) {
-      // Handle exceptions
-      print(e);
+      // Better error handling
+      rethrow;
     }
   }
 }

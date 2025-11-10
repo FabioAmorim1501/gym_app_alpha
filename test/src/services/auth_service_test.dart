@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gym_app_alpha/src/services/auth_service.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
-import 'package:mockito/mockito.dart';
 
 typedef Callback = void Function(MethodCall call);
 
