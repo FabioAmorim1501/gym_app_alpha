@@ -33,6 +33,10 @@ jobs:
         with:
           channel: 'stable'
       - run: flutter pub get
+      - name: Create gradle.properties
+        run: |
+          echo "android.useAndroidX=true" >> android/gradle.properties
+          echo "android.enableJetifier=true" >> android/gradle.properties
       - run: flutter build apk
       - name: Upload APK
         uses: actions/upload-artifact@v3
