@@ -13,7 +13,6 @@ web/flutter_service_worker.js
 web/flutter_service_worker.js.map
 web/flutter_service_worker.dart.js
 web/flutter_service_worker.dart.js.map
-android/gradle.properties
 android/gradle-local.properties
 *.iml
 /.android/Flutter/build.log
