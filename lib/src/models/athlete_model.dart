@@ -10,10 +10,5 @@ class Athlete extends User {
     required String name,
     required this.trainerId,
     required this.trainingPlanId,
-  }) : super(
-          uid: uid,
-          email: email,
-          name: name,
-          role: UserRole.athlete,
-        );
+  }) : super(uid: uid, email: email, name: name, role: UserRole.athlete);
 }
