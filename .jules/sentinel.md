@@ -1,0 +1,4 @@
+## 2024-05-14 - [Information Disclosure] Avoid leaking stack traces in authentication errors
+**Vulnerability:** The `AuthService` class was logging raw `FirebaseAuthException` objects via `print(e)` upon signup or login failures. This could leak sensitive internal application states or details about the Firebase setup directly to the console/logs, which an attacker might view if they gain access to device logs or application telemetry.
+**Learning:** Raw exception printing (`print(e)`) should never be used for caught errors related to sensitive operations like authentication, as exceptions often contain stack traces or verbose messages meant for debugging, not production security.
+**Prevention:** Always implement generic, safe error messages (e.g., "Authentication failed") for the user and standard output. Log detailed errors securely (and stripped of sensitive data) only if required for centralized secure logging mechanisms.
