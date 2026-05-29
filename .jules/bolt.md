@@ -1,0 +1,3 @@
+## 2024-05-24 - TextEditingController memory leaks in Flutter
+**Learning:** In Flutter, `TextEditingController` instances that are not explicitly disposed in the `dispose()` method of a `StatefulWidget`'s State class cause memory leaks, as they hold onto listeners and memory resources indefinitely even after the widget is removed from the widget tree.
+**Action:** Always verify that `TextEditingController`s (and similar listener-holding resources like `ScrollController` or `AnimationController`) instantiated in a `StatefulWidget` are properly disposed of by overriding the `dispose()` lifecycle method and calling `.dispose()` on each controller.
