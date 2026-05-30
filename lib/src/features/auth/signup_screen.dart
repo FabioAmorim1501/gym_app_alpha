@@ -14,6 +14,15 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   @override
+  void dispose() {
+    // ⚡ Bolt: Prevent memory leaks by explicitly disposing controllers
+    // Controllers hold onto native resources and cause memory leaks if not disposed.
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
