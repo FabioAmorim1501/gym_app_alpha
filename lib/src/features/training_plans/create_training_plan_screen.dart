@@ -43,6 +43,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
+            tooltip: 'Save Training Plan',
             onPressed: () {
               if (_user != null) {
                 final trainingPlan = TrainingPlan(
@@ -116,7 +117,8 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                   final exercise = _exercises[index];
                   return ListTile(
                     title: Text(exercise.name),
-                    subtitle: Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
+                    subtitle:
+                        Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
                   );
                 },
               ),
