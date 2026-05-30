@@ -37,6 +37,8 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
 
   @override
   void dispose() {
+    // ⚡ Bolt: Disposing TextEditingControllers prevents memory leaks when widget is destroyed.
+    // Impact: Reduces memory consumption by cleaning up native resources.
     _planNameController.dispose();
     _exerciseNameController.dispose();
     _setsController.dispose();
@@ -81,28 +83,20 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
           children: [
             TextField(
               controller: _planNameController,
-              decoration: const InputDecoration(
-                labelText: 'Plan Name',
-              ),
+              decoration: const InputDecoration(labelText: 'Plan Name'),
             ),
             TextField(
               controller: _exerciseNameController,
-              decoration: const InputDecoration(
-                labelText: 'Exercise Name',
-              ),
+              decoration: const InputDecoration(labelText: 'Exercise Name'),
             ),
             TextField(
               controller: _setsController,
-              decoration: const InputDecoration(
-                labelText: 'Sets',
-              ),
+              decoration: const InputDecoration(labelText: 'Sets'),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _repsController,
-              decoration: const InputDecoration(
-                labelText: 'Reps',
-              ),
+              decoration: const InputDecoration(labelText: 'Reps'),
               keyboardType: TextInputType.number,
             ),
             ElevatedButton(
@@ -126,6 +120,9 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                   final exercise = _exercises[index];
                   return ListTile(
                     title: Text(exercise.name),
+                    subtitle: Text(
+                      'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                    ),
                     subtitle:
                         Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
                   );
