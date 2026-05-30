@@ -36,6 +36,15 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
   }
 
   @override
+  void dispose() {
+    _planNameController.dispose();
+    _exerciseNameController.dispose();
+    _setsController.dispose();
+    _repsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -43,6 +52,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
+            tooltip: 'Save Training Plan',
             onPressed: () {
               if (_user != null) {
                 final trainingPlan = TrainingPlan(
@@ -116,7 +126,8 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                   final exercise = _exercises[index];
                   return ListTile(
                     title: Text(exercise.name),
-                    subtitle: Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
+                    subtitle:
+                        Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
                   );
                 },
               ),
