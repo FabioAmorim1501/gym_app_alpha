@@ -8,10 +8,5 @@ class Administrator extends User {
     required String email,
     required String name,
     required this.workerIds,
-  }) : super(
-          uid: uid,
-          email: email,
-          name: name,
-          role: UserRole.administrator,
-        );
+  }) : super(uid: uid, email: email, name: name, role: UserRole.administrator);
 }

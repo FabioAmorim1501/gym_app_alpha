@@ -22,17 +22,36 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void dispose() {
+    // ⚡ Bolt: Disposing TextEditingControllers prevents memory leaks when widget is destroyed.
+    // Impact: Reduces memory consumption by cleaning up native resources.
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Signup'),
-      ),
+      appBar: AppBar(title: const Text('Signup')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
@@ -74,6 +93,33 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Text('Signup'),
+              onPressed: () async {
+                final email = _emailController.text.trim();
+                final password = _passwordController.text;
+
+                if (email.isEmpty || !email.contains('@')) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a valid email address.')),
+                  );
+                  return;
+                }
+
+                if (password.length < 8) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Password must be at least 8 characters long.')),
+                  );
+                  return;
+                }
+
+                final user = await _auth.signUp(
+                  email,
+                  password,
+                );
+                if (user != null) {
+                  Navigator.pushReplacementNamed(context, '/home');
+                }
+              },
+              child: const Text('Signup'),
             ),
           ],
         ),
