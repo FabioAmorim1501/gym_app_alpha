@@ -36,6 +36,15 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
   }
 
   @override
+  void dispose() {
+    _planNameController.dispose();
+    _exerciseNameController.dispose();
+    _setsController.dispose();
+    _repsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
