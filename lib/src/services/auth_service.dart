@@ -13,8 +13,8 @@ class AuthService {
       );
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      // Handle exceptions
-      print(e);
+      // Handle exceptions securely: avoid leaking raw exception details
+      print('Authentication error during sign up.');
       return null;
     }
   }
@@ -27,8 +27,8 @@ class AuthService {
       );
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
-      // Handle exceptions
-      print(e);
+      // Handle exceptions securely: avoid leaking raw exception details
+      print('Authentication error during login.');
       return null;
     }
   }
