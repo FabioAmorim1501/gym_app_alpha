@@ -36,6 +36,17 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
   }
 
   @override
+  void dispose() {
+    // ⚡ Bolt: Prevent memory leaks by explicitly disposing controllers
+    // Controllers hold onto native resources and cause memory leaks if not disposed.
+    _planNameController.dispose();
+    _exerciseNameController.dispose();
+    _setsController.dispose();
+    _repsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -116,7 +127,8 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                   final exercise = _exercises[index];
                   return ListTile(
                     title: Text(exercise.name),
-                    subtitle: Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
+                    subtitle:
+                        Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
                   );
                 },
               ),
