@@ -38,9 +38,26 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
+                final email = _emailController.text.trim();
+                final password = _passwordController.text;
+
+                if (email.isEmpty || !email.contains('@')) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter a valid email address.')),
+                  );
+                  return;
+                }
+
+                if (password.length < 8) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Password must be at least 8 characters long.')),
+                  );
+                  return;
+                }
+
                 final user = await _auth.signUp(
-                  _emailController.text,
-                  _passwordController.text,
+                  email,
+                  password,
                 );
                 if (user != null) {
                   Navigator.pushReplacementNamed(context, '/home');

@@ -38,12 +38,26 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             ElevatedButton(
               onPressed: () async {
+                final email = _emailController.text.trim();
+                final password = _passwordController.text;
+
+                if (email.isEmpty || password.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter email and password.')),
+                  );
+                  return;
+                }
+
                 final user = await _auth.login(
-                  _emailController.text,
-                  _passwordController.text,
+                  email,
+                  password,
                 );
                 if (user != null) {
                   Navigator.pushReplacementNamed(context, '/home');
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Login failed. Please check your credentials.')),
+                  );
                 }
               },
               child: const Text('Login'),
