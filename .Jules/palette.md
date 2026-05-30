@@ -1,0 +1,3 @@
+## 2024-03-24 - Async Form Feedback and Input Types in Auth Screens
+**Learning:** During testing of the gym app's authentication screens, it became apparent that submitting login/signup forms without a loading indicator could lead to duplicate submissions and confused users. Furthermore, without proper `keyboardType` (`TextInputType.emailAddress`) and `textInputAction` (`TextInputAction.next`/`done`) configured, the mobile keyboard experience felt disjointed.
+**Action:** Always implement a `_isLoading` state combined with `CircularProgressIndicator` on submission buttons for async operations like Firebase Auth calls. Configure all `TextField` widgets with the appropriate keyboard type and action to streamline form completion on mobile devices.
