@@ -12,3 +12,8 @@
 **Vulnerability:** Lack of client-side input validation on authentication screens (login and signup).
 **Learning:** Found that basic UI forms for sensitive operations were not validating input format or strength, which can lead to unnecessary backend calls with invalid data or weak passwords.
 **Prevention:** Implement validation logic at the UI boundary before calling authentication services. Ensure minimum password complexity and valid email formats are checked.
+
+## 2024-05-28 - Missing Input Length Limitations
+**Vulnerability:** Found lack of input length validation (like `maxLength`) on text fields for user-facing auth screens (`login_screen.dart` and `signup_screen.dart`). Attackers could submit massive payloads leading to app memory exhaustion or excessive backend processing (Denial of Service).
+**Learning:** Even with backend sanitization, client-side screens are vulnerable to malicious payload exhaustion if unconstrained.
+**Prevention:** Implement reasonable `maxLength` limits on `TextField` components handling user input to explicitly bounds-check the input size before application logic attempts processing.

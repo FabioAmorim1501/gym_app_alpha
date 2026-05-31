@@ -35,11 +35,13 @@ class _LoginScreenState extends State<LoginScreen> {
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
+              maxLength: 100, // 🛡️ Sentinel: Added length limit to prevent DoS
               decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextField(
               controller: _passwordController,
               textInputAction: TextInputAction.done,
+              maxLength: 100, // 🛡️ Sentinel: Added length limit to prevent DoS
               decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
