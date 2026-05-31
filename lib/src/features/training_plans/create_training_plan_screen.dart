@@ -101,33 +101,55 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             ),
             ElevatedButton(
               onPressed: () {
+                final name = _exerciseNameController.text.trim();
+                final sets = int.tryParse(_setsController.text);
+                final reps = int.tryParse(_repsController.text);
+
+                if (name.isEmpty || sets == null || reps == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter a valid exercise name, sets, and reps.'),
+                    ),
+                  );
+                  return;
+                }
+
                 setState(() {
                   _exercises.add(
                     Exercise(
-                      name: _exerciseNameController.text,
-                      sets: int.parse(_setsController.text),
-                      reps: int.parse(_repsController.text),
+                      name: name,
+                      sets: sets,
+                      reps: reps,
                     ),
                   );
+                  _exerciseNameController.clear();
+                  _setsController.clear();
+                  _repsController.clear();
                 });
               },
               child: const Text('Add Exercise'),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _exercises.length,
-                itemBuilder: (context, index) {
-                  final exercise = _exercises[index];
-                  return ListTile(
-                    title: Text(exercise.name),
-                    subtitle: Text(
-                      'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+              child: _exercises.isEmpty
+                  ? const Center(
+                      child: Text(
+                        'No exercises added yet. Add an exercise to get started.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: _exercises.length,
+                      itemBuilder: (context, index) {
+                        final exercise = _exercises[index];
+                        return ListTile(
+                          title: Text(exercise.name),
+                          subtitle: Text(
+                            'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                          ),
+                        );
+                      },
                     ),
-                    subtitle:
-                        Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
-                  );
-                },
-              ),
             ),
           ],
         ),
