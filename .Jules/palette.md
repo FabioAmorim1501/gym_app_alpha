@@ -7,3 +7,6 @@
 ## 2026-05-27 - Added tooltip to IconButton
 **Learning:** In Flutter, adding a `tooltip` property to an `IconButton` serves a dual purpose: it provides a visual hint on hover/long-press AND it acts as a semantic label for screen readers, similar to an ARIA label in web development. This is a highly effective, low-effort micro-UX improvement for accessibility.
 **Action:** Always look for icon-only buttons in Flutter apps and ensure they have a `tooltip` property defined.
+## 2024-05-31 - Empty States, Input Validation, and Field Clearing
+**Learning:** Adding empty states to dynamically populated lists significantly improves the user experience by offering clarity rather than a blank screen. Further, validating numeric inputs with `int.tryParse` prevents unexpected parsing crashes, and clearing input fields following successful operations streamlines user workflow on form-heavy screens.
+**Action:** Always implement empty states for lists or data tables that can be empty. Use `tryParse` for converting string input to numbers, and reset form text controllers on successful submission or data addition.
