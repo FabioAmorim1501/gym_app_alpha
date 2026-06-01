@@ -1,9 +1,4 @@
-enum UserRole {
-  athlete,
-  trainer,
-  worker,
-  administrator,
-}
+enum UserRole { athlete, trainer, worker, administrator }
 
 class User {
   final String uid;

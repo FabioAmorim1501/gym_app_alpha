@@ -49,7 +49,8 @@ class MyApp extends StatelessWidget {
           final args = settings.arguments as Map<String, dynamic>?;
           final athleteId = args?['athleteId'] ?? 'unknown_athlete_id';
           return MaterialPageRoute(
-            builder: (context) => CreateTrainingPlanScreen(athleteId: athleteId),
+            builder: (context) =>
+                CreateTrainingPlanScreen(athleteId: athleteId),
           );
         }
         if (settings.name == '/payment') {
@@ -67,9 +68,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-      ),
+      appBar: AppBar(title: const Text('Home')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

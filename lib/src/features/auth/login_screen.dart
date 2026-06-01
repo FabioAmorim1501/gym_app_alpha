@@ -16,6 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    // ⚡ Bolt: Disposing TextEditingControllers prevents memory leaks when widget is destroyed.
+    // Impact: Reduces memory consumption by cleaning up native resources.
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -24,9 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -51,12 +51,22 @@ class _LoginScreenState extends State<LoginScreen> {
               onPressed: _isLoading
                   ? null
                   : () async {
+                      final email = _emailController.text.trim();
+                      final password = _passwordController.text;
+
+                      if (email.isEmpty || password.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Please enter email and password.')),
+                        );
+                        return;
+                      }
+
                       setState(() {
                         _isLoading = true;
                       });
                       final user = await _auth.login(
-                        _emailController.text,
-                        _passwordController.text,
+                        email,
+                        password,
                       );
                       if (mounted) {
                         setState(() {
@@ -64,6 +74,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                         if (user != null) {
                           Navigator.pushReplacementNamed(context, '/home');
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Login failed. Please check your credentials.')),
+                          );
                         }
                       }
                     },

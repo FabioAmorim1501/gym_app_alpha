@@ -8,10 +8,5 @@ class Worker extends User {
     required String email,
     required String name,
     required this.administratorId,
-  }) : super(
-          uid: uid,
-          email: email,
-          name: name,
-          role: UserRole.worker,
-        );
+  }) : super(uid: uid, email: email, name: name, role: UserRole.worker);
 }

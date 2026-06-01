@@ -4,13 +4,16 @@ import 'package:gym_app_alpha/src/models/training_plan_model.dart';
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  Future<String> createPaymentIntent(
-      {required String userId, required int amount}) async {
-    final docRef = _db.collection('stripe_customers').doc(userId).collection('payments').doc();
-    await docRef.set({
-      'amount': amount,
-      'currency': 'usd',
-    });
+  Future<String> createPaymentIntent({
+    required String userId,
+    required int amount,
+  }) async {
+    final docRef = _db
+        .collection('stripe_customers')
+        .doc(userId)
+        .collection('payments')
+        .doc();
+    await docRef.set({'amount': amount, 'currency': 'usd'});
     return docRef.id;
   }
 
@@ -20,12 +23,14 @@ class FirestoreService {
       'trainerId': trainingPlan.trainerId,
       'athleteId': trainingPlan.athleteId,
       'exercises': trainingPlan.exercises
-          .map((e) => {
-                'name': e.name,
-                'sets': e.sets,
-                'reps': e.reps,
-                'notes': e.notes,
-              })
+          .map(
+            (e) => {
+              'name': e.name,
+              'sets': e.sets,
+              'reps': e.reps,
+              'notes': e.notes,
+            },
+          )
           .toList(),
     });
   }
@@ -40,12 +45,14 @@ class FirestoreService {
         trainerId: data['trainerId'],
         athleteId: data['athleteId'],
         exercises: (data['exercises'] as List)
-            .map((e) => Exercise(
-                  name: e['name'],
-                  sets: e['sets'],
-                  reps: e['reps'],
-                  notes: e['notes'],
-                ))
+            .map(
+              (e) => Exercise(
+                name: e['name'],
+                sets: e['sets'],
+                reps: e['reps'],
+                notes: e['notes'],
+              ),
+            )
             .toList(),
       );
     }
