@@ -7,3 +7,6 @@
 ## 2026-05-27 - Added tooltip to IconButton
 **Learning:** In Flutter, adding a `tooltip` property to an `IconButton` serves a dual purpose: it provides a visual hint on hover/long-press AND it acts as a semantic label for screen readers, similar to an ARIA label in web development. This is a highly effective, low-effort micro-UX improvement for accessibility.
 **Action:** Always look for icon-only buttons in Flutter apps and ensure they have a `tooltip` property defined.
+## 2024-05-24 - Validate Forms Before Setting Loading States
+**Learning:** Setting a form submission button to a loading/disabled state *before* running client-side validation logic locks the user out of the form if their input is invalid. This prevents them from fixing the errors and retrying, leading to a dead-end UI state.
+**Action:** Always execute client-side validation checks before updating the UI to a loading state. Only transition to the loading state if all validation checks pass.
