@@ -12,3 +12,12 @@
 **Vulnerability:** Lack of client-side input validation on authentication screens (login and signup).
 **Learning:** Found that basic UI forms for sensitive operations were not validating input format or strength, which can lead to unnecessary backend calls with invalid data or weak passwords.
 **Prevention:** Implement validation logic at the UI boundary before calling authentication services. Ensure minimum password complexity and valid email formats are checked.
+## 2024-06-02 - Client-Side Input Parsing and Length Limits
+
+**Vulnerability:** The application was directly parsing user input for numerical fields using `int.parse()` without validating the format. This could lead to a `FormatException` and crash the application (a form of client-side DoS) if a user inputted non-numeric characters. Furthermore, text fields lacked a `maxLength` property, which could potentially be abused to input extremely long strings, leading to excessive memory usage or rendering issues.
+
+**Learning:** Trusting user input without validation, even for basic numeric fields, is unsafe. Direct parsing methods like `int.parse()` should be avoided when processing UI input. Similarly, unbound text fields can pose a risk to application stability and performance.
+
+**Prevention:** To prevent similar vulnerabilities:
+- Always use safe parsing methods like `int.tryParse()` when handling user-provided numeric data and gracefully handle `null` returns (e.g., by showing a user-friendly error message).
+- Enforce reasonable `maxLength` limits on all text input fields to prevent unbounded data entry.

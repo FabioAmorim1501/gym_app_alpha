@@ -84,10 +84,12 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             TextField(
               controller: _planNameController,
               decoration: const InputDecoration(labelText: 'Plan Name'),
+              maxLength: 100, // 🛡️ Sentinel: Added length limit to prevent DoS
             ),
             TextField(
               controller: _exerciseNameController,
               decoration: const InputDecoration(labelText: 'Exercise Name'),
+              maxLength: 100, // 🛡️ Sentinel: Added length limit to prevent DoS
             ),
             TextField(
               controller: _setsController,
@@ -101,14 +103,29 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             ),
             ElevatedButton(
               onPressed: () {
+                // 🛡️ Sentinel: Use tryParse to prevent FormatException crash (DoS risk)
+                final sets = int.tryParse(_setsController.text);
+                final reps = int.tryParse(_repsController.text);
+
+                if (sets == null || reps == null || sets < 0 || reps < 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Sets and Reps must be valid positive numbers.')),
+                  );
+                  return;
+                }
+
                 setState(() {
                   _exercises.add(
                     Exercise(
                       name: _exerciseNameController.text,
-                      sets: int.parse(_setsController.text),
-                      reps: int.parse(_repsController.text),
+                      sets: sets,
+                      reps: reps,
                     ),
                   );
+                  // ⚡ Bolt: Clear fields after adding to improve UX
+                  _exerciseNameController.clear();
+                  _setsController.clear();
+                  _repsController.clear();
                 });
               },
               child: const Text('Add Exercise'),
