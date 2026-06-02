@@ -7,6 +7,3 @@
 ## 2026-05-27 - Added tooltip to IconButton
 **Learning:** In Flutter, adding a `tooltip` property to an `IconButton` serves a dual purpose: it provides a visual hint on hover/long-press AND it acts as a semantic label for screen readers, similar to an ARIA label in web development. This is a highly effective, low-effort micro-UX improvement for accessibility.
 **Action:** Always look for icon-only buttons in Flutter apps and ensure they have a `tooltip` property defined.
-## 2024-05-30 - Form Submission Loading States
-**Learning:** Asynchronous form submission buttons (like login or signup) without loading states allow users to submit the form multiple times, leading to confusing duplicate requests and a poor user experience as they wait without feedback.
-**Action:** Always implement a loading state (e.g., displaying a `CircularProgressIndicator`) and disable the submission button while the async request is processing to prevent duplicate submissions and provide clear visual feedback.
