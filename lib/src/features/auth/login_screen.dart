@@ -57,6 +57,8 @@ class _LoginScreenState extends State<LoginScreen> {
               decoration: const InputDecoration(
                 labelText: 'Email',
               ),
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
             ),
             TextField(
               controller: _passwordController,
@@ -65,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 labelText: 'Password',
               ),
               obscureText: true,
+              textInputAction: TextInputAction.done,
             ),
             ElevatedButton(
               onPressed: _isLoading
