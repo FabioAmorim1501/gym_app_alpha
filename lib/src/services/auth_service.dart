@@ -11,14 +11,12 @@ class AuthService {
       return null;
     }
     try {
-      final UserCredential userCredential = await _auth
-          .createUserWithEmailAndPassword(email: email, password: password);
       final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
       return userCredential.user;
-    } on FirebaseAuthException catch (e) {
+    } catch (_) {
       // 🛡️ Sentinel: Removed print(e) to prevent leaking error details to logs
       return null;
     }
@@ -30,14 +28,12 @@ class AuthService {
       return null;
     }
     try {
-      final UserCredential userCredential = await _auth
-          .signInWithEmailAndPassword(email: email, password: password);
       final UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
       );
       return userCredential.user;
-    } on FirebaseAuthException catch (e) {
+    } catch (_) {
       // 🛡️ Sentinel: Removed print(e) to prevent leaking error details to logs
       return null;
     }
