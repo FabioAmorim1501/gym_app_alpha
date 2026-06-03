@@ -12,3 +12,7 @@
 **Vulnerability:** Lack of client-side input validation on authentication screens (login and signup).
 **Learning:** Found that basic UI forms for sensitive operations were not validating input format or strength, which can lead to unnecessary backend calls with invalid data or weak passwords.
 **Prevention:** Implement validation logic at the UI boundary before calling authentication services. Ensure minimum password complexity and valid email formats are checked.
+## 2026-06-03 - Prevented Stack Trace Leakage in PaymentService
+**Vulnerability:** The `PaymentService` was using `rethrow` in its `makePayment` method. When an exception occurred during the interaction with the Stripe SDK or Firestore, the raw exception and its stack trace would bubble up, potentially leaking sensitive internal state, SDK details, or server infrastructure information.
+**Learning:** Relying on raw exceptions from third-party SDKs or internal services can inadvertently expose implementation details. It is crucial to define application-level boundaries where errors are caught and sanitized before being presented to the user or logged, following the "fail securely" principle.
+**Prevention:** Catch specific and generic exceptions at the service boundary. Instead of rethrowing raw exceptions, throw generic application-level exceptions (e.g., `Exception('Payment processing failed')`) to mask underlying implementation details and prevent stack trace leakage.

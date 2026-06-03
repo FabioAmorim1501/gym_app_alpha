@@ -25,9 +25,13 @@ class PaymentService {
       );
       // 3. display the payment sheet.
       await _stripe.presentPaymentSheet();
+    } on StripeException {
+      // 🛡️ Sentinel: Catch raw Stripe exceptions and throw a generic error
+      // to prevent leaking sensitive stack traces and internal details.
+      throw Exception('Payment processing failed. Please try again.');
     } catch (e) {
-      // Better error handling
-      rethrow;
+      // 🛡️ Sentinel: Catch generic exceptions and mask details
+      throw Exception('An unexpected error occurred during payment.');
     }
   }
 }
