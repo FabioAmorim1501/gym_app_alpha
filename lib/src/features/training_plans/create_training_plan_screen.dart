@@ -105,29 +105,34 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                   _exercises.add(
                     Exercise(
                       name: _exerciseNameController.text,
-                      sets: int.parse(_setsController.text),
-                      reps: int.parse(_repsController.text),
+                      sets: int.tryParse(_setsController.text) ?? 0,
+                      reps: int.tryParse(_repsController.text) ?? 0,
                     ),
                   );
+                  _exerciseNameController.clear();
+                  _setsController.clear();
+                  _repsController.clear();
                 });
               },
               child: const Text('Add Exercise'),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _exercises.length,
-                itemBuilder: (context, index) {
-                  final exercise = _exercises[index];
-                  return ListTile(
-                    title: Text(exercise.name),
-                    subtitle: Text(
-                      'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+              child: _exercises.isEmpty
+                  ? const Center(
+                      child: Text('No exercises added yet. Add one above!'),
+                    )
+                  : ListView.builder(
+                      itemCount: _exercises.length,
+                      itemBuilder: (context, index) {
+                        final exercise = _exercises[index];
+                        return ListTile(
+                          title: Text(exercise.name),
+                          subtitle: Text(
+                            'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                          ),
+                        );
+                      },
                     ),
-                    subtitle:
-                        Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
-                  );
-                },
-              ),
             ),
           ],
         ),
