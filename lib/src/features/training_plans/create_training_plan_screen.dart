@@ -20,7 +20,9 @@ class CreateTrainingPlanScreen extends StatefulWidget {
 }
 
 class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
-  final List<Exercise> _exercises = [];
+  // ⚡ Bolt: Refactored _exercises to a ValueNotifier
+  // Impact: Prevents needless rebuilds of all TextFields in the widget tree when an exercise is added, solving lag issues on slow devices.
+  final ValueNotifier<List<Exercise>> _exercisesNotifier = ValueNotifier([]);
   final TextEditingController _planNameController = TextEditingController();
   final TextEditingController _exerciseNameController = TextEditingController();
   final TextEditingController _setsController = TextEditingController();
@@ -43,6 +45,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
     _exerciseNameController.dispose();
     _setsController.dispose();
     _repsController.dispose();
+    _exercisesNotifier.dispose();
     super.dispose();
   }
 
@@ -62,7 +65,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                   name: _planNameController.text,
                   trainerId: _user!.uid,
                   athleteId: widget.athleteId,
-                  exercises: _exercises,
+                  exercises: _exercisesNotifier.value,
                 );
                 _firestoreService.saveTrainingPlan(trainingPlan);
                 Navigator.pop(context);
@@ -101,30 +104,38 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  _exercises.add(
-                    Exercise(
-                      name: _exerciseNameController.text,
-                      sets: int.parse(_setsController.text),
-                      reps: int.parse(_repsController.text),
-                    ),
-                  );
-                });
+                final currentList = List<Exercise>.from(_exercisesNotifier.value);
+                currentList.add(
+                  Exercise(
+                    name: _exerciseNameController.text,
+                    sets: int.parse(_setsController.text),
+                    reps: int.parse(_repsController.text),
+                  ),
+                );
+                _exercisesNotifier.value = currentList;
+
+                // Clear fields for better UX
+                _exerciseNameController.clear();
+                _setsController.clear();
+                _repsController.clear();
               },
               child: const Text('Add Exercise'),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _exercises.length,
-                itemBuilder: (context, index) {
-                  final exercise = _exercises[index];
-                  return ListTile(
-                    title: Text(exercise.name),
-                    subtitle: Text(
-                      'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
-                    ),
-                    subtitle:
-                        Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
+              child: ValueListenableBuilder<List<Exercise>>(
+                valueListenable: _exercisesNotifier,
+                builder: (context, exercises, child) {
+                  return ListView.builder(
+                    itemCount: exercises.length,
+                    itemBuilder: (context, index) {
+                      final exercise = exercises[index];
+                      return ListTile(
+                        title: Text(exercise.name),
+                        subtitle: Text(
+                          'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                        ),
+                      );
+                    },
                   );
                 },
               ),

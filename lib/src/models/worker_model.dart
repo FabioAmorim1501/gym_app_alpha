@@ -1,4 +1,4 @@
-import 'package.gym_app_alpha/src/models/user_model.dart';
+import 'package:gym_app_alpha/src/models/user_model.dart';
 
 class Worker extends User {
   final String administratorId;
