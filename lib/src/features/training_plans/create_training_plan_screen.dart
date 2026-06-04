@@ -110,24 +110,29 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                     ),
                   );
                 });
+                _exerciseNameController.clear();
+                _setsController.clear();
+                _repsController.clear();
               },
               child: const Text('Add Exercise'),
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: _exercises.length,
-                itemBuilder: (context, index) {
-                  final exercise = _exercises[index];
-                  return ListTile(
-                    title: Text(exercise.name),
-                    subtitle: Text(
-                      'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+              child: _exercises.isEmpty
+                  ? const Center(
+                      child: Text('No exercises added yet. Add one above!'),
+                    )
+                  : ListView.builder(
+                      itemCount: _exercises.length,
+                      itemBuilder: (context, index) {
+                        final exercise = _exercises[index];
+                        return ListTile(
+                          title: Text(exercise.name),
+                          subtitle: Text(
+                            'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                          ),
+                        );
+                      },
                     ),
-                    subtitle:
-                        Text('Sets: ${exercise.sets}, Reps: ${exercise.reps}'),
-                  );
-                },
-              ),
             ),
           ],
         ),
