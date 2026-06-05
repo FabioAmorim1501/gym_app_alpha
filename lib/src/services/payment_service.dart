@@ -26,8 +26,9 @@ class PaymentService {
       // 3. display the payment sheet.
       await _stripe.presentPaymentSheet();
     } catch (e) {
-      // Better error handling
-      rethrow;
+      // 🛡️ Sentinel: Removed rethrow to prevent leaking sensitive stack traces
+      // Throws a generic exception instead
+      throw Exception('Payment processing failed. Please try again later.');
     }
   }
 }

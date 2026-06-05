@@ -66,5 +66,21 @@ void main() {
 
       verify(() => mockStripe.presentPaymentSheet()).called(1);
     });
+
+    test('makePayment throws generic exception on failure', () async {
+      // Arrange
+      const userId = 'test_user_id';
+      when(() => mockFirestoreService.createPaymentIntent(
+            userId: any(named: 'userId'),
+            amount: any(named: 'amount'),
+          )).thenThrow(Exception('Internal error'));
+
+      // Act & Assert
+      expect(
+        () => paymentService.makePayment(userId),
+        throwsA(isA<Exception>().having(
+            (e) => e.toString(), 'message', contains('Payment processing failed'))),
+      );
+    });
   });
 }
