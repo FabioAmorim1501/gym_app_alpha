@@ -20,7 +20,7 @@ class CreateTrainingPlanScreen extends StatefulWidget {
 }
 
 class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
-  final List<Exercise> _exercises = [];
+  final ValueNotifier<List<Exercise>> _exercisesNotifier = ValueNotifier([]);
   final TextEditingController _planNameController = TextEditingController();
   final TextEditingController _exerciseNameController = TextEditingController();
   final TextEditingController _setsController = TextEditingController();
@@ -39,6 +39,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
   void dispose() {
     // ⚡ Bolt: Disposing TextEditingControllers prevents memory leaks when widget is destroyed.
     // Impact: Reduces memory consumption by cleaning up native resources.
+    _exercisesNotifier.dispose();
     _planNameController.dispose();
     _exerciseNameController.dispose();
     _setsController.dispose();
@@ -62,7 +63,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                   name: _planNameController.text,
                   trainerId: _user!.uid,
                   athleteId: widget.athleteId,
-                  exercises: _exercises,
+                  exercises: _exercisesNotifier.value,
                 );
                 _firestoreService.saveTrainingPlan(trainingPlan);
                 Navigator.pop(context);
@@ -113,15 +114,16 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                setState(() {
-                  _exercises.add(
-                    Exercise(
-                      name: _exerciseNameController.text,
-                      sets: int.parse(_setsController.text),
-                      reps: int.parse(_repsController.text),
-                    ),
-                  );
-                });
+                // ⚡ Bolt: Update ValueNotifier instead of triggering a global setState.
+                // Impact: Prevents expensive entire form rebuilds when adding a single exercise.
+                _exercisesNotifier.value = [
+                  ..._exercisesNotifier.value,
+                  Exercise(
+                    name: _exerciseNameController.text,
+                    sets: int.parse(_setsController.text),
+                    reps: int.parse(_repsController.text),
+                  ),
+                ];
                 _exerciseNameController.clear();
                 _setsController.clear();
                 _repsController.clear();
@@ -129,22 +131,27 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
               child: const Text('Add Exercise'),
             ),
             Expanded(
-              child: _exercises.isEmpty
-                  ? const Center(
-                      child: Text('No exercises added yet. Add one above!'),
-                    )
-                  : ListView.builder(
-                      itemCount: _exercises.length,
-                      itemBuilder: (context, index) {
-                        final exercise = _exercises[index];
-                        return ListTile(
-                          title: Text(exercise.name),
-                          subtitle: Text(
-                            'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
-                          ),
+              child: ValueListenableBuilder<List<Exercise>>(
+                valueListenable: _exercisesNotifier,
+                builder: (context, exercises, _) {
+                  return exercises.isEmpty
+                      ? const Center(
+                          child: Text('No exercises added yet. Add one above!'),
+                        )
+                      : ListView.builder(
+                          itemCount: exercises.length,
+                          itemBuilder: (context, index) {
+                            final exercise = exercises[index];
+                            return ListTile(
+                              title: Text(exercise.name),
+                              subtitle: Text(
+                                'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                              ),
+                            );
+                          },
                         );
-                      },
-                    ),
+                },
+              ),
             ),
           ],
         ),

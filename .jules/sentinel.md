@@ -12,3 +12,8 @@
 **Vulnerability:** Lack of client-side input validation on authentication screens (login and signup).
 **Learning:** Found that basic UI forms for sensitive operations were not validating input format or strength, which can lead to unnecessary backend calls with invalid data or weak passwords.
 **Prevention:** Implement validation logic at the UI boundary before calling authentication services. Ensure minimum password complexity and valid email formats are checked.
+
+## 2024-05-28 - Removed Generic Rethrowing in PaymentService
+**Vulnerability:** The `PaymentService` was using `rethrow` within its try-catch block for processing payments (`makePayment` method). This could inadvertently leak sensitive stack traces and internal application or third-party SDK errors directly to the calling context or unhandled exception loggers.
+**Learning:** Raw stack traces from critical dependencies (like Stripe or Firestore) can expose internal paths or logic which an attacker could use. It's safer to catch such errors and wrap them in a generic application-level exception.
+**Prevention:** Use a standard try-catch block without `rethrow` for third-party SDKs or backend services unless the exception is caught and sanitized at a higher level. Instead, throw a generic `Exception('Payment processing failed. Please try again later.')` to safely manage the user experience without exposing implementation details.

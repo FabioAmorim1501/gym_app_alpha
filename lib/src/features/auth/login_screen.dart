@@ -58,7 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       if (email.isEmpty || password.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please enter email and password.')),
+                          const SnackBar(
+                              content:
+                                  Text('Please enter email and password.')),
                         );
                         return;
                       }
@@ -66,7 +68,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       setState(() {
                         _isLoading = true;
                       });
-                      final user = await _auth.login(email, password);
+
+                      final user = await _auth.login(
+                        email,
+                        password,
+                      );
+
                       if (mounted) {
                         setState(() {
                           _isLoading = false;
@@ -75,7 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           Navigator.pushReplacementNamed(context, '/home');
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Login failed. Please check your credentials.')),
+                            const SnackBar(
+                                content: Text(
+                                    'Login failed. Please check your credentials.')),
                           );
                         }
                       }

@@ -58,14 +58,18 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       if (email.isEmpty || !email.contains('@')) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please enter a valid email address.')),
+                          const SnackBar(
+                              content:
+                                  Text('Please enter a valid email address.')),
                         );
                         return;
                       }
 
                       if (password.length < 8) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Password must be at least 8 characters long.')),
+                          const SnackBar(
+                              content: Text(
+                                  'Password must be at least 8 characters long.')),
                         );
                         return;
                       }
@@ -73,7 +77,12 @@ class _SignupScreenState extends State<SignupScreen> {
                       setState(() {
                         _isLoading = true;
                       });
-                      final user = await _auth.signUp(email, password);
+
+                      final user = await _auth.signUp(
+                        email,
+                        password,
+                      );
+
                       if (mounted) {
                         setState(() {
                           _isLoading = false;
