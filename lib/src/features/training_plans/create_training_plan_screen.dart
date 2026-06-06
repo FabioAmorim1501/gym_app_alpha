@@ -84,32 +84,49 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
           children: [
             TextField(
               controller: _planNameController,
+              maxLength: 50,
               decoration: const InputDecoration(labelText: 'Plan Name'),
             ),
             TextField(
               controller: _exerciseNameController,
+              maxLength: 50,
               decoration: const InputDecoration(labelText: 'Exercise Name'),
             ),
             TextField(
               controller: _setsController,
+              maxLength: 3,
               decoration: const InputDecoration(labelText: 'Sets'),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _repsController,
+              maxLength: 3,
               decoration: const InputDecoration(labelText: 'Reps'),
               keyboardType: TextInputType.number,
             ),
             ElevatedButton(
               onPressed: () {
+                final sets = int.tryParse(_setsController.text);
+                final reps = int.tryParse(_repsController.text);
+                final name = _exerciseNameController.text.trim();
+
+                if (name.isEmpty || sets == null || reps == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Please enter valid exercise name, sets, and reps.'),
+                    ),
+                  );
+                  return;
+                }
+
                 // ⚡ Bolt: Update ValueNotifier instead of triggering a global setState.
                 // Impact: Prevents expensive entire form rebuilds when adding a single exercise.
                 _exercisesNotifier.value = [
                   ..._exercisesNotifier.value,
                   Exercise(
-                    name: _exerciseNameController.text,
-                    sets: int.parse(_setsController.text),
-                    reps: int.parse(_repsController.text),
+                    name: name,
+                    sets: sets,
+                    reps: reps,
                   ),
                 ];
                 _exerciseNameController.clear();
