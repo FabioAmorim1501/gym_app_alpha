@@ -10,3 +10,6 @@
 ## 2026-05-29 - Improved Empty State and Form UX in Create Training Plan
 **Learning:** Displaying an empty list without context is a poor user experience. An empty state message (e.g., "No exercises added yet. Add one above!") provides helpful guidance. Additionally, failing to clear form input fields after appending an item forces the user to manually delete old text, adding unnecessary friction.
 **Action:** Always implement empty state fallbacks for dynamic lists like `ListView.builder`. Always clear `TextEditingController` fields after successfully submitting or appending user input in a form.
+## 2026-06-06 - Enhanced TextFields with prefix icons and appropriate input types
+**Learning:** Including a `prefixIcon` in `TextField` widgets (like an email or lock icon) provides immediate visual recognition for users, reducing cognitive load when filling out forms. Furthermore, explicitly setting `keyboardType` (e.g., `TextInputType.emailAddress`) and `textInputAction` appropriately, while turning off `autocorrect` for fields like emails, greatly streamlines mobile data entry.
+**Action:** Always include a `prefixIcon` for common inputs and configure keyboard and action types to match the expected input.
