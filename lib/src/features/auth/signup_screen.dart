@@ -12,7 +12,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final AuthService _auth = AuthService();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
+  final ValueNotifier<bool> _isLoadingNotifier = ValueNotifier(false);
 
   @override
   void dispose() {
@@ -20,6 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
     // Impact: Reduces memory consumption by cleaning up native resources.
     _emailController.dispose();
     _passwordController.dispose();
+    _isLoadingNotifier.dispose();
     super.dispose();
   }
 
@@ -50,56 +51,59 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               obscureText: true,
             ),
-            ElevatedButton(
-              onPressed: _isLoading
-                  ? null
-                  : () async {
-                      final email = _emailController.text.trim();
-                      final password = _passwordController.text;
+            // ⚡ Bolt: Use ValueListenableBuilder instead of setState to avoid rebuilding the entire form
+            // Impact: Improves performance by localizing rebuilds to just the button when loading state changes
+            ValueListenableBuilder<bool>(
+              valueListenable: _isLoadingNotifier,
+              builder: (context, isLoading, child) {
+                return ElevatedButton(
+                  onPressed: isLoading
+                      ? null
+                      : () async {
+                          final email = _emailController.text.trim();
+                          final password = _passwordController.text;
 
-                      if (email.isEmpty || !email.contains('@')) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content:
-                                  Text('Please enter a valid email address.')),
-                        );
-                        return;
-                      }
+                          if (email.isEmpty || !email.contains('@')) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Please enter a valid email address.')),
+                            );
+                            return;
+                          }
 
-                      if (password.length < 8) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Password must be at least 8 characters long.')),
-                        );
-                        return;
-                      }
+                          if (password.length < 8) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Password must be at least 8 characters long.')),
+                            );
+                            return;
+                          }
 
-                      setState(() {
-                        _isLoading = true;
-                      });
+                          _isLoadingNotifier.value = true;
 
-                      final user = await _auth.signUp(
-                        email,
-                        password,
-                      );
+                          final user = await _auth.signUp(
+                            email,
+                            password,
+                          );
 
-                      if (mounted) {
-                        setState(() {
-                          _isLoading = false;
-                        });
-                        if (user != null) {
-                          Navigator.pushReplacementNamed(context, '/home');
-                        }
-                      }
-                    },
-              child: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Text('Signup'),
+                          if (mounted) {
+                            _isLoadingNotifier.value = false;
+                            if (user != null) {
+                              Navigator.pushReplacementNamed(context, '/home');
+                            }
+                          }
+                        },
+                  child: isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Text('Signup'),
+                );
+              },
             ),
           ],
         ),
