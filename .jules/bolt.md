@@ -8,3 +8,7 @@
 ## 2024-06-05 - ValueNotifier for Form Performance Optimization
 **Learning:** Calling `setState` at the root of a complex Flutter form widget rebuilds all descendant widgets, including expensive `TextField`s. This is highly inefficient when only a small portion of the UI (like a dynamic list of added items) needs to be updated.
 **Action:** Isolate localized reactive state (e.g., dynamic lists) using `ValueNotifier` and wrap the specific dependent UI in a `ValueListenableBuilder`. This prevents unnecessary entire form rebuilds and significantly improves performance during data entry.
+
+## 2024-07-26 - ListView.builder Performance Optimization
+**Learning:** Calculating layout extents dynamically for every item in a `ListView.builder` can cause scroll jank, especially for long lists. If all items have the same structure (e.g., a `ListTile`), the layout calculations can be optimized.
+**Action:** Always use the `prototypeItem` property in `ListView.builder` when all items have the same extent. This allows the list to pre-calculate the layout extent once based on the prototype, significantly reducing layout calculations during scrolling. Combine this with `maxLines: 1` and `overflow: TextOverflow.ellipsis` on textual content to ensure consistent item heights.

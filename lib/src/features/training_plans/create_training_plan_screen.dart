@@ -113,7 +113,8 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                 if (name.isEmpty || sets == null || reps == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Please enter valid exercise name, sets, and reps.'),
+                      content: Text(
+                          'Please enter valid exercise name, sets, and reps.'),
                     ),
                   );
                   return;
@@ -145,12 +146,22 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                         )
                       : ListView.builder(
                           itemCount: exercises.length,
+                          prototypeItem: const ListTile(
+                            title: Text('Prototype'),
+                            subtitle: Text('Prototype'),
+                          ),
                           itemBuilder: (context, index) {
                             final exercise = exercises[index];
                             return ListTile(
-                              title: Text(exercise.name),
+                              title: Text(
+                                exercise.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               subtitle: Text(
                                 'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             );
                           },
