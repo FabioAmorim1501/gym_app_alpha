@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             TextField(
               controller: _emailController,
+              maxLength: 100,
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               autocorrect: false,
@@ -44,6 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             TextField(
               controller: _passwordController,
+              maxLength: 100,
               textInputAction: TextInputAction.done,
               decoration: const InputDecoration(
                 labelText: 'Password',
