@@ -37,17 +37,21 @@ class _SignupScreenState extends State<SignupScreen> {
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
               autocorrect: false,
+              maxLength: 254, // 🛡️ Sentinel: Added maxLength to prevent DoS
               decoration: const InputDecoration(
                 labelText: 'Email',
                 prefixIcon: Icon(Icons.email),
+                counterText: '',
               ),
             ),
             TextField(
               controller: _passwordController,
               textInputAction: TextInputAction.done,
+              maxLength: 128, // 🛡️ Sentinel: Added maxLength to prevent DoS
               decoration: const InputDecoration(
                 labelText: 'Password',
                 prefixIcon: Icon(Icons.lock),
+                counterText: '',
               ),
               obscureText: true,
             ),
