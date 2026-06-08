@@ -13,3 +13,7 @@
 ## 2026-06-06 - Enhanced TextFields with prefix icons and appropriate input types
 **Learning:** Including a `prefixIcon` in `TextField` widgets (like an email or lock icon) provides immediate visual recognition for users, reducing cognitive load when filling out forms. Furthermore, explicitly setting `keyboardType` (e.g., `TextInputType.emailAddress`) and `textInputAction` appropriately, while turning off `autocorrect` for fields like emails, greatly streamlines mobile data entry.
 **Action:** Always include a `prefixIcon` for common inputs and configure keyboard and action types to match the expected input.
+
+## $(date +%Y-%m-%d) - Adding loading states to async form actions
+**Learning:** It's crucial for UX to give visual feedback to long-running async tasks like external payment service calls. In Flutter, simple localized state management like `ValueNotifier` and `ValueListenableBuilder` are great for wrapping small parts of the widget tree (like a button child) to transition between the idle text and a `CircularProgressIndicator` without rebuilding the whole form, and avoiding "double submits" by using `null` for `onPressed` while loading.
+**Action:** Whenever introducing external API calls or delays, always consider how to visually represent the wait to the user natively and seamlessly.
