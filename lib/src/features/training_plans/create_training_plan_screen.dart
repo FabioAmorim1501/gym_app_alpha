@@ -113,7 +113,9 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                 if (name.isEmpty || sets == null || reps == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Please enter valid exercise name, sets, and reps.'),
+                      content: Text(
+                        'Please enter valid exercise name, sets, and reps.',
+                      ),
                     ),
                   );
                   return;
@@ -123,11 +125,7 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                 // Impact: Prevents expensive entire form rebuilds when adding a single exercise.
                 _exercisesNotifier.value = [
                   ..._exercisesNotifier.value,
-                  Exercise(
-                    name: name,
-                    sets: sets,
-                    reps: reps,
-                  ),
+                  Exercise(name: name, sets: sets, reps: reps),
                 ];
                 _exerciseNameController.clear();
                 _setsController.clear();
@@ -143,14 +141,34 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                       ? const Center(
                           child: Text('No exercises added yet. Add one above!'),
                         )
+                      // ⚡ Bolt: Using prototypeItem for ListView.builder to optimize scroll performance.
+                      // Impact: Forces ListView to pre-calculate layout extent instead of doing it lazily per item, significantly improving scroll smoothness for uniform lists.
                       : ListView.builder(
                           itemCount: exercises.length,
+                          prototypeItem: const ListTile(
+                            title: Text(
+                              '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            subtitle: Text(
+                              '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                           itemBuilder: (context, index) {
                             final exercise = exercises[index];
                             return ListTile(
-                              title: Text(exercise.name),
+                              title: Text(
+                                exercise.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               subtitle: Text(
                                 'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             );
                           },
