@@ -13,3 +13,6 @@
 ## 2026-06-06 - Enhanced TextFields with prefix icons and appropriate input types
 **Learning:** Including a `prefixIcon` in `TextField` widgets (like an email or lock icon) provides immediate visual recognition for users, reducing cognitive load when filling out forms. Furthermore, explicitly setting `keyboardType` (e.g., `TextInputType.emailAddress`) and `textInputAction` appropriately, while turning off `autocorrect` for fields like emails, greatly streamlines mobile data entry.
 **Action:** Always include a `prefixIcon` for common inputs and configure keyboard and action types to match the expected input.
+## 2026-06-09 - Maintained Layout Stability when using maxLength in Forms
+**Learning:** When using `maxLength` on a `TextField` to restrict input length (for DoS prevention), Flutter automatically displays a character counter below the input. This counter causes an unwanted layout shift, increasing the height of the field and cluttering the form visually.
+**Action:** Always include `counterText: ''` inside the `InputDecoration` of any `TextField` that utilizes `maxLength` if the visible counter is not strictly necessary. This acts as a micro-UX improvement by maintaining layout stability. Furthermore, always configure `textInputAction` (e.g., `TextInputAction.next` or `TextInputAction.done`) to streamline the keyboard navigation flow.
