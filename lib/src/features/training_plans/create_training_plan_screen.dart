@@ -145,12 +145,25 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                         )
                       : ListView.builder(
                           itemCount: exercises.length,
+                          // ⚡ Bolt: Using prototypeItem for uniform lists prevents Flutter from having to
+                          // calculate the layout extent of each item during scrolling.
+                          // Impact: Significantly improves scrolling performance and reduces frame drops.
+                          prototypeItem: const ListTile(
+                            title: Text('Prototype', maxLines: 1, overflow: TextOverflow.ellipsis),
+                            subtitle: Text('Prototype', maxLines: 1, overflow: TextOverflow.ellipsis),
+                          ),
                           itemBuilder: (context, index) {
                             final exercise = exercises[index];
                             return ListTile(
-                              title: Text(exercise.name),
+                              title: Text(
+                                exercise.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                               subtitle: Text(
                                 'Sets: ${exercise.sets}, Reps: ${exercise.reps}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             );
                           },
