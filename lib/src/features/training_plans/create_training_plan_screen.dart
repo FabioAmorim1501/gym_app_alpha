@@ -85,23 +85,43 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             TextField(
               controller: _planNameController,
               maxLength: 50,
-              decoration: const InputDecoration(labelText: 'Plan Name'),
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Plan Name',
+                counterText: '',
+                prefixIcon: Icon(Icons.assignment),
+              ),
             ),
             TextField(
               controller: _exerciseNameController,
               maxLength: 50,
-              decoration: const InputDecoration(labelText: 'Exercise Name'),
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Exercise Name',
+                counterText: '',
+                prefixIcon: Icon(Icons.fitness_center),
+              ),
             ),
             TextField(
               controller: _setsController,
               maxLength: 3,
-              decoration: const InputDecoration(labelText: 'Sets'),
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Sets',
+                counterText: '',
+                prefixIcon: Icon(Icons.repeat),
+              ),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _repsController,
               maxLength: 3,
-              decoration: const InputDecoration(labelText: 'Reps'),
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                labelText: 'Reps',
+                counterText: '',
+                prefixIcon: Icon(Icons.replay),
+              ),
               keyboardType: TextInputType.number,
             ),
             ElevatedButton(
