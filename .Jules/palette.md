@@ -13,3 +13,6 @@
 ## 2026-06-06 - Enhanced TextFields with prefix icons and appropriate input types
 **Learning:** Including a `prefixIcon` in `TextField` widgets (like an email or lock icon) provides immediate visual recognition for users, reducing cognitive load when filling out forms. Furthermore, explicitly setting `keyboardType` (e.g., `TextInputType.emailAddress`) and `textInputAction` appropriately, while turning off `autocorrect` for fields like emails, greatly streamlines mobile data entry.
 **Action:** Always include a `prefixIcon` for common inputs and configure keyboard and action types to match the expected input.
+## 2026-06-10 - Streamlined mobile form navigation with TextInputAction
+**Learning:** For optimal mobile form UX in Flutter, configuring intermediate `TextField` widgets with `textInputAction: TextInputAction.next` and the final field with `TextInputAction.done` allows users to smoothly jump between fields without dismissing the on-screen keyboard. This, combined with `prefixIcon`s, drastically reduces cognitive load and data entry friction.
+**Action:** Always verify that multi-field forms have correct `textInputAction` sequences configured to support continuous keyboard navigation.
