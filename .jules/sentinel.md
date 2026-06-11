@@ -22,3 +22,8 @@
 **Vulnerability:** The application was using `int.parse()` on user inputs for 'Sets' and 'Reps' without catching `FormatException` or validating the input length beforehand. Empty, non-numeric, or excessively long strings would crash the app entirely due to the unhandled exception, presenting a client-side Denial of Service (DoS) risk. Furthermore, unbounded text fields allowed malicious input which could excessively allocate memory.
 **Learning:** Parsing user input directly with `int.parse()` or similar strict typing functions without validation or try/catch blocks exposes apps to easy client-side crashes, especially with user-generated content.
 **Prevention:** Always use safe parsing methods like `int.tryParse()` and handle `null` returns gracefully with user feedback (like a SnackBar). Additionally, enforce `maxLength` on TextFields to prevent large strings from consuming excessive memory and potentially causing a Denial of Service (DoS).
+
+## 2024-05-24 - Information Leakage via Unhandled Exceptions
+**Vulnerability:** Unhandled database exceptions (like `FirebaseException`) from direct Firestore calls were not being caught. This could potentially bubble up to the client or logs, leaking sensitive internal database structure, collection names, or query paths.
+**Learning:** Raw third-party library or database errors often contain verbose information that is not intended for the end-user and can provide attackers with structural knowledge of the backend.
+**Prevention:** Always wrap direct database interactions (e.g., Firestore queries and writes) in `try/catch` blocks and throw a generic application-level `Exception` (e.g., "Failed to save data. Please try again.") to obscure sensitive internals.
