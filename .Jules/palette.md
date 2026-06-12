@@ -13,3 +13,6 @@
 ## 2026-06-06 - Enhanced TextFields with prefix icons and appropriate input types
 **Learning:** Including a `prefixIcon` in `TextField` widgets (like an email or lock icon) provides immediate visual recognition for users, reducing cognitive load when filling out forms. Furthermore, explicitly setting `keyboardType` (e.g., `TextInputType.emailAddress`) and `textInputAction` appropriately, while turning off `autocorrect` for fields like emails, greatly streamlines mobile data entry.
 **Action:** Always include a `prefixIcon` for common inputs and configure keyboard and action types to match the expected input.
+## 2026-06-12 - Adding prefixIcons and textInputActions to Training Plan Form
+**Learning:** When making multiple data entry fields, users navigate via the keyboard next button. Visual icons (like `prefixIcon`) greatly reduce cognitive load when identifying the purpose of dense form inputs in a mobile layout.
+**Action:** Always include `prefixIcon` and appropriate `textInputAction` attributes (like `TextInputAction.next`) to multi-field forms.
