@@ -85,23 +85,39 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
             TextField(
               controller: _planNameController,
               maxLength: 50,
-              decoration: const InputDecoration(labelText: 'Plan Name'),
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Plan Name',
+                prefixIcon: Icon(Icons.assignment),
+              ),
             ),
             TextField(
               controller: _exerciseNameController,
               maxLength: 50,
-              decoration: const InputDecoration(labelText: 'Exercise Name'),
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Exercise Name',
+                prefixIcon: Icon(Icons.fitness_center),
+              ),
             ),
             TextField(
               controller: _setsController,
               maxLength: 3,
-              decoration: const InputDecoration(labelText: 'Sets'),
+              textInputAction: TextInputAction.next,
+              decoration: const InputDecoration(
+                labelText: 'Sets',
+                prefixIcon: Icon(Icons.repeat),
+              ),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _repsController,
               maxLength: 3,
-              decoration: const InputDecoration(labelText: 'Reps'),
+              textInputAction: TextInputAction.done,
+              decoration: const InputDecoration(
+                labelText: 'Reps',
+                prefixIcon: Icon(Icons.refresh),
+              ),
               keyboardType: TextInputType.number,
             ),
             ElevatedButton(
@@ -113,7 +129,8 @@ class _CreateTrainingPlanScreenState extends State<CreateTrainingPlanScreen> {
                 if (name.isEmpty || sets == null || reps == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Please enter valid exercise name, sets, and reps.'),
+                      content: Text(
+                          'Please enter valid exercise name, sets, and reps.'),
                     ),
                   );
                   return;
