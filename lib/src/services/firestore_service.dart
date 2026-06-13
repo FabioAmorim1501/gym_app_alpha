@@ -8,54 +8,69 @@ class FirestoreService {
     required String userId,
     required int amount,
   }) async {
-    final docRef = _db
-        .collection('stripe_customers')
-        .doc(userId)
-        .collection('payments')
-        .doc();
-    await docRef.set({'amount': amount, 'currency': 'usd'});
-    return docRef.id;
+    try {
+      final docRef = _db
+          .collection('stripe_customers')
+          .doc(userId)
+          .collection('payments')
+          .doc();
+      await docRef.set({'amount': amount, 'currency': 'usd'});
+      return docRef.id;
+    } catch (e) {
+      // 🛡️ Sentinel: Catch generic exception to avoid leaking database paths or sensitive stack traces
+      throw Exception('Failed to create payment intent. Please try again.');
+    }
   }
 
   Future<void> saveTrainingPlan(TrainingPlan trainingPlan) async {
-    await _db.collection('training_plans').doc(trainingPlan.id).set({
-      'name': trainingPlan.name,
-      'trainerId': trainingPlan.trainerId,
-      'athleteId': trainingPlan.athleteId,
-      'exercises': trainingPlan.exercises
-          .map(
-            (e) => {
-              'name': e.name,
-              'sets': e.sets,
-              'reps': e.reps,
-              'notes': e.notes,
-            },
-          )
-          .toList(),
-    });
+    try {
+      await _db.collection('training_plans').doc(trainingPlan.id).set({
+        'name': trainingPlan.name,
+        'trainerId': trainingPlan.trainerId,
+        'athleteId': trainingPlan.athleteId,
+        'exercises': trainingPlan.exercises
+            .map(
+              (e) => {
+                'name': e.name,
+                'sets': e.sets,
+                'reps': e.reps,
+                'notes': e.notes,
+              },
+            )
+            .toList(),
+      });
+    } catch (e) {
+      // 🛡️ Sentinel: Catch generic exception to avoid leaking database paths or sensitive stack traces
+      throw Exception('Failed to save training plan. Please try again.');
+    }
   }
 
   Future<TrainingPlan?> getTrainingPlan(String id) async {
-    final doc = await _db.collection('training_plans').doc(id).get();
-    if (doc.exists) {
-      final data = doc.data()!;
-      return TrainingPlan(
-        id: id,
-        name: data['name'],
-        trainerId: data['trainerId'],
-        athleteId: data['athleteId'],
-        exercises: (data['exercises'] as List)
-            .map(
-              (e) => Exercise(
-                name: e['name'],
-                sets: e['sets'],
-                reps: e['reps'],
-                notes: e['notes'],
-              ),
-            )
-            .toList(),
-      );
+    try {
+      final doc = await _db.collection('training_plans').doc(id).get();
+      if (doc.exists) {
+        final data = doc.data()!;
+        return TrainingPlan(
+          id: id,
+          name: data['name'],
+          trainerId: data['trainerId'],
+          athleteId: data['athleteId'],
+          exercises: (data['exercises'] as List)
+              .map(
+                (e) => Exercise(
+                  name: e['name'],
+                  sets: e['sets'],
+                  reps: e['reps'],
+                  notes: e['notes'],
+                ),
+              )
+              .toList(),
+        );
+      }
+      return null;
+    } catch (e) {
+      // 🛡️ Sentinel: Catch generic exception to avoid leaking database paths or sensitive stack traces
+      throw Exception('Failed to get training plan. Please try again.');
     }
-    return null;
   }
 }
